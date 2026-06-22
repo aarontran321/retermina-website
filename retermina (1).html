@@ -1212,10 +1212,16 @@
       cursor: pointer;
       transition: color 0.15s, background 0.15s, border-color 0.15s;
     }
-    .loom-filter.active {
+    .loom-filter.active,
+    .loom-filter[aria-pressed="true"] {
       color: var(--rt-accent);
       border-color: var(--rt-accent);
       background: var(--rt-accent-soft);
+    }
+    .loom-filter:focus-visible {
+      outline: none;
+      border-color: var(--rt-accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--rt-accent) 20%, transparent);
     }
     .loom-spacer { flex: 1; }
     .loom-submit-btn {
@@ -1915,9 +1921,15 @@
 
       <div class="loom-subsection loom-search-tools">
         <div class="loom-search-wrap">
-          <input id="loom-search" class="loom-search-input" type="search" placeholder="Search available configurations by title, description, or tag..." aria-label="Search available loom configurations">
+          <input id="marketplace-search" class="loom-search-input" type="search" placeholder="Search available configurations by title or description..." aria-label="Search available loom configurations" autocomplete="off" spellcheck="false">
         </div>
-        <div class="loom-filter-tags" id="loom-filter-tags" role="group" aria-label="Quick preset filters"></div>
+        <div class="loom-filter-tags" id="loom-filter-tags" role="group" aria-label="Quick preset filters">
+          <button type="button" class="rt-btn-outline loom-filter active" data-filter="all" aria-pressed="true">All Presets</button>
+          <button type="button" class="rt-btn-outline loom-filter" data-filter="dark" aria-pressed="false">Dark</button>
+          <button type="button" class="rt-btn-outline loom-filter" data-filter="light" aria-pressed="false">Light</button>
+          <button type="button" class="rt-btn-outline loom-filter" data-filter="glass" aria-pressed="false">Glass</button>
+          <button type="button" class="rt-btn-outline loom-filter" data-filter="community" aria-pressed="false">Community</button>
+        </div>
       </div>
 
       <div class="loom-subsection">
@@ -2727,7 +2739,7 @@
     const loomGrid = document.getElementById('loom-grid');
     const favoritesGrid = document.getElementById('favorites-grid');
     const favoritesEmpty = document.getElementById('favorites-empty');
-    const loomSearchInput = document.getElementById('loom-search');
+    const loomSearchInput = document.getElementById('marketplace-search') || document.getElementById('loom-search');
     const loomFilterTags = document.getElementById('loom-filter-tags');
     const getPresetCards = () => Array.from(loomGrid.querySelectorAll('.preset-card'));
     const getTopCards = () => Array.from(document.querySelectorAll('.top-loom-card'));
@@ -2747,7 +2759,13 @@
 
     const HEART_ICON_SVG = `<svg class="rt-icon" width="14" height="14" viewBox="0 0 24 24"><path d="m12 21-1.35-1.23C5.4 15.03 2 11.96 2 8.2 2 5.16 4.42 2.75 7.45 2.75c1.72 0 3.36.8 4.55 2.05 1.19-1.25 2.83-2.05 4.55-2.05C19.58 2.75 22 5.16 22 8.2c0 3.76-3.4 6.83-8.65 11.57L12 21z"/></svg>`;
     const DOWNLOAD_ICON_SVG = `<svg class="rt-icon" width="13" height="13" viewBox="0 0 24 24" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`;
-    const PRIORITY_LOOM_FILTERS = ['dark', 'light', 'glass'];
+    const MARKETPLACE_FILTERS = [
+      { value: 'all', label: 'All Presets' },
+      { value: 'dark', label: 'Dark' },
+      { value: 'light', label: 'Light' },
+      { value: 'glass', label: 'Glass' },
+      { value: 'community', label: 'Community' },
+    ];
     const slugifyValue = value => (value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     let activeLoomFilter = 'all';
     let activeSearchQuery = '';
@@ -2767,52 +2785,36 @@
       const fromBadge = splitTagValues(card.querySelector('.preset-tag')?.textContent || '');
       return Array.from(new Set([...fromData, ...fromBadge]));
     }
-    function formatFilterLabel(value) {
-      if (value === 'all') return 'All Presets';
-      return value.split('-').filter(Boolean).map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
-    }
-    function getAvailableLoomFilters() {
-      const discovered = new Set();
-      getPresetCards().forEach(card => {
-        getCardTagValues(card).forEach(tag => discovered.add(tag));
-      });
-      const ordered = PRIORITY_LOOM_FILTERS.filter(tag => discovered.has(tag));
-      const remaining = Array.from(discovered)
-        .filter(tag => !PRIORITY_LOOM_FILTERS.includes(tag))
-        .sort((a, b) => a.localeCompare(b));
-      return ['all', ...ordered, ...remaining];
-    }
     function setActiveLoomFilterButton(filter) {
       if (!loomFilterTags) return;
       loomFilterTags.querySelectorAll('.loom-filter').forEach(button => {
-        button.classList.toggle('active', button.dataset.filter === filter);
+        const isActive = button.dataset.filter === filter;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
     }
     function renderLoomFilterButtons() {
       if (!loomFilterTags) return;
-      const filters = getAvailableLoomFilters();
-      if (!filters.includes(activeLoomFilter)) activeLoomFilter = 'all';
       loomFilterTags.innerHTML = '';
-      filters.forEach(filter => {
+      MARKETPLACE_FILTERS.forEach(filter => {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'rt-btn-outline loom-filter';
-        button.dataset.filter = filter;
-        button.textContent = formatFilterLabel(filter);
+        button.dataset.filter = filter.value;
+        button.textContent = filter.label;
+        button.setAttribute('aria-pressed', 'false');
         loomFilterTags.appendChild(button);
       });
       setActiveLoomFilterButton(activeLoomFilter);
     }
-    function cardSearchHaystack(card) {
+    function getCardSearchText(card) {
       const title = card.querySelector('.preset-name')?.textContent || '';
       const description = card.querySelector('.preset-desc')?.textContent || '';
-      const tag = card.querySelector('.preset-tag')?.textContent || '';
-      const tags = card.dataset.tags || '';
-      return `${title} ${description} ${tag} ${tags}`.toLowerCase();
+      return `${title} ${description}`.toLowerCase();
     }
     function cardMatchesSearch(card, query) {
       if (!query) return true;
-      return cardSearchHaystack(card).includes(query);
+      return getCardSearchText(card).includes(query);
     }
     function cardMatchesFilter(card, filter) {
       if (filter === 'all') return true;
@@ -2821,24 +2823,38 @@
     function applyLoomFilter(filter = activeLoomFilter) {
       activeLoomFilter = normalizeTagValue(filter) || 'all';
       getPresetCards().forEach(card => {
-        const matchesTag = cardMatchesFilter(card, activeLoomFilter);
         const matchesSearch = cardMatchesSearch(card, activeSearchQuery);
-        card.hidden = !(matchesTag && matchesSearch);
+        const matchesTag = cardMatchesFilter(card, activeLoomFilter);
+        const shouldShow = matchesSearch && matchesTag;
+        card.hidden = false;
+        card.style.display = shouldShow ? '' : 'none';
       });
       setActiveLoomFilterButton(activeLoomFilter);
     }
-    if (loomFilterTags) {
-      loomFilterTags.addEventListener('click', event => {
-        const target = event.target.closest('.loom-filter');
-        if (!target || !loomFilterTags.contains(target)) return;
-        applyLoomFilter(target.dataset.filter || 'all');
-      });
+    function handleMarketplaceSearchInput() {
+      if (!loomSearchInput) return;
+      activeSearchQuery = (loomSearchInput.value || '').toLowerCase().trim();
+      applyLoomFilter(activeLoomFilter);
     }
-    if (loomSearchInput) {
-      loomSearchInput.addEventListener('input', () => {
-        activeSearchQuery = loomSearchInput.value.trim().toLowerCase();
-        applyLoomFilter(activeLoomFilter);
-      });
+    function initializeMarketplaceFilters() {
+      renderLoomFilterButtons();
+      if (loomFilterTags) {
+        loomFilterTags.addEventListener('click', event => {
+          const target = event.target.closest('.loom-filter');
+          if (!target || !loomFilterTags.contains(target)) return;
+          applyLoomFilter(target.dataset.filter || 'all');
+        });
+      }
+      if (loomSearchInput) {
+        loomSearchInput.value = '';
+        loomSearchInput.removeAttribute('readonly');
+        loomSearchInput.removeAttribute('disabled');
+        loomSearchInput.addEventListener('input', handleMarketplaceSearchInput);
+        loomSearchInput.addEventListener('keyup', handleMarketplaceSearchInput);
+      }
+      activeSearchQuery = '';
+      activeLoomFilter = 'all';
+      applyLoomFilter(activeLoomFilter);
     }
 
     function setHeartState(button, isFavorited) {
@@ -2986,8 +3002,7 @@
     getAllLoomCards().forEach(card => ensureFavoriteButton(card));
     document.querySelectorAll('.preset-dl-btn').forEach(btn => setDownloadButtonLabel(btn, 'Download Config'));
     renderFavoritesShelf();
-    renderLoomFilterButtons();
-    applyLoomFilter('all');
+    initializeMarketplaceFilters();
 
     /* ── Download button simulation ── */
     function handleDownload(btn, filename) {
