@@ -503,6 +503,37 @@
       vertical-align: middle;
       margin: 0 0.1rem;
     }
+    .hero-dmg-wrap {
+      margin-top: 0.9rem;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      animation: fade-up 0.7s ease 0.52s both;
+    }
+    .hero-dmg-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.64rem 1.3rem;
+      border-radius: 999px;
+      border: var(--rt-border-width) solid color-mix(in srgb, var(--rt-accent) 28%, var(--rt-border));
+      background: linear-gradient(135deg, color-mix(in srgb, var(--rt-surface-strong) 84%, #000 16%), color-mix(in srgb, var(--rt-surface) 75%, #000 25%));
+      color: var(--rt-text);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      box-shadow: 0 10px 26px -16px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px) saturate(130%);
+      -webkit-backdrop-filter: blur(12px) saturate(130%);
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.25s, color 0.2s;
+    }
+    .hero-dmg-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--rt-accent);
+      color: var(--rt-accent);
+      box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--rt-accent) 38%, transparent);
+    }
 
     /* ── Terminal demo ── */
     .terminal-demo-wrap {
@@ -788,6 +819,10 @@
       .social-link { width: 2rem; height: 2rem; }
       .theme-switcher { font-size: 0.68rem; padding: 0.3rem 0.4rem; }
       .loom-btn { font-size: 0.72rem; padding: 0.35rem 0.7rem; }
+      .hero-dmg-btn {
+        width: min(92vw, 360px);
+        justify-content: center;
+      }
     }
 
     /* ── Loom Marketplace section ── */
@@ -865,6 +900,7 @@
       font-size: 0.95rem;
       font-weight: 600;
       letter-spacing: -0.01em;
+      margin-right: auto;
     }
     .top-loom-badge {
       font-size: 0.64rem;
@@ -894,6 +930,134 @@
       color: var(--rt-text-faint);
       padding-top: 0.55rem;
       border-top: var(--rt-border-width) solid var(--rt-border);
+    }
+    .loom-heart-btn {
+      width: 1.9rem;
+      height: 1.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: var(--rt-border-width) solid var(--rt-border);
+      border-radius: var(--rt-radius-sm);
+      background: var(--rt-subsurface);
+      color: var(--rt-text-faint);
+      cursor: pointer;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .heart-glyph {
+      font-size: 0.95rem;
+      transform: translateY(1px);
+    }
+    .loom-heart-btn:hover {
+      color: #fb7185;
+      border-color: #fb7185;
+      background: color-mix(in srgb, #fb7185 10%, transparent);
+      transform: translateY(-1px);
+    }
+    .loom-heart-btn.active {
+      color: #fb7185;
+      border-color: #fb7185;
+      background: color-mix(in srgb, #fb7185 14%, transparent);
+      box-shadow: 0 0 0 1px color-mix(in srgb, #fb7185 30%, transparent);
+    }
+    .favorite-highlight {
+      border-color: var(--rt-accent) !important;
+      box-shadow: 0 0 0 1px var(--rt-accent), 0 0 0 4px color-mix(in srgb, var(--rt-accent) 25%, transparent);
+    }
+    .loom-favorites {
+      padding: 1rem;
+      margin-bottom: 2.15rem;
+    }
+    .loom-favorites-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.35rem;
+    }
+    .loom-favorites-title {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .loom-favorites-copy {
+      margin: 0 0 0.95rem;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--rt-text-muted);
+      max-width: 620px;
+    }
+    .favorites-empty {
+      margin: 0;
+      padding: 0.9rem;
+      border: var(--rt-border-width) dashed var(--rt-border);
+      border-radius: var(--rt-radius);
+      font-size: 0.77rem;
+      line-height: 1.45;
+      background: var(--rt-subsurface);
+    }
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+    .favorite-item {
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      min-height: 180px;
+    }
+    .favorite-item-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .favorite-item-badge {
+      font-size: 0.64rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--rt-text-faint);
+      border: var(--rt-border-width) solid var(--rt-border);
+      border-radius: 999px;
+      padding: 0.18rem 0.45rem;
+      background: var(--rt-subsurface);
+    }
+    .favorite-item h4 {
+      margin: 0;
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .favorite-item p {
+      margin: 0;
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: var(--rt-text-muted);
+    }
+    .favorite-item-meta {
+      margin-top: auto;
+      font-size: 0.71rem;
+      color: var(--rt-text-faint);
+      line-height: 1.45;
+      min-height: 1.4em;
+    }
+    .favorite-remove-btn {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+    .favorite-jump-btn {
+      align-self: flex-start;
+      padding: 0.36rem 0.7rem;
+      font-size: 0.72rem;
+      line-height: 1;
     }
 
     .loom-toolbar {
@@ -1402,6 +1566,16 @@
         <span class="hero-version-dot"></span>
         Retermina <span class="hero-version-beta">beta</span> · v1.0.0 — early access, expect rough edges
       </p>
+      <div class="hero-dmg-wrap">
+        <a class="hero-dmg-btn" href="#">
+          <svg class="rt-icon" width="14" height="14" viewBox="0 0 24 24" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" x2="12" y1="3" y2="15"/>
+          </svg>
+          Download Desktop App (.dmg)
+        </a>
+      </div>
 
       <!-- Live terminal demo -->
       <div class="terminal-demo-wrap rt-panel" id="terminal-demo">
@@ -1550,6 +1724,15 @@
         </span>
         <h2 class="section-title">Retermina Loom Marketplace</h2>
         <p class="rt-text-muted">One streamlined destination for curated top-rated layouts and all available workplace configurations. Browse, rate, and publish setups in the same flow.</p>
+      </div>
+      <div class="loom-favorites rt-panel">
+        <div class="loom-favorites-head">
+          <h3 class="loom-favorites-title">My Favorites</h3>
+          <span class="rt-text-faint">Tap hearts to build your quick shelf</span>
+        </div>
+        <p class="loom-favorites-copy">Favorited loom configurations appear here instantly so you can compare your saved setups in one place.</p>
+        <p class="favorites-empty rt-text-muted" id="favorites-empty">No favorites yet — click a heart on any loom card to save it.</p>
+        <div class="favorites-grid" id="favorites-grid" aria-live="polite"></div>
       </div>
 
       <div class="loom-subsection">
@@ -2377,7 +2560,11 @@
     if (startCards.length) startObs.observe(startCards[0].parentElement);
     /* ── Loom preset card reveal ── */
     const loomGrid = document.getElementById('loom-grid');
-    const getPresetCards = () => Array.from(loomGrid.querySelectorAll('.preset-card'));
+    const favoritesGrid = document.getElementById('favorites-grid');
+    const favoritesEmpty = document.getElementById('favorites-empty');
+    const LOOM_CARD_SELECTOR = '.top-loom-card, .preset-card';
+    const getPresetCards = () => loomGrid ? Array.from(loomGrid.querySelectorAll('.preset-card')) : [];
+    const getLoomCards = () => Array.from(document.querySelectorAll(LOOM_CARD_SELECTOR));
     const presetObs = new IntersectionObserver(entries => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
@@ -2390,6 +2577,141 @@
       if (card) presetObs.observe(card);
     }
     getPresetCards().forEach(observePresetCard);
+    const slugifyValue = value => (value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    function createHeartButton() {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'loom-heart-btn';
+      const glyph = document.createElement('span');
+      glyph.className = 'heart-glyph';
+      glyph.setAttribute('aria-hidden', 'true');
+      glyph.textContent = '♡';
+      button.appendChild(glyph);
+      return button;
+    }
+    function setHeartState(button, isFavorited) {
+      button.classList.toggle('active', isFavorited);
+      button.setAttribute('aria-pressed', isFavorited ? 'true' : 'false');
+      button.setAttribute('aria-label', isFavorited ? 'Remove from favorites' : 'Add to favorites');
+      const glyph = button.querySelector('.heart-glyph');
+      if (glyph) glyph.textContent = isFavorited ? '♥' : '♡';
+    }
+    function getCardTitle(card) {
+      return card.querySelector('.top-loom-title, .preset-name')?.textContent?.trim() || 'Loom configuration';
+    }
+    function getCardDescription(card) {
+      return card.querySelector('.top-loom-desc, .preset-desc')?.textContent?.trim() || 'Saved loom configuration.';
+    }
+    function getCardFavoriteId(card) {
+      if (card.dataset.favoriteId) return card.dataset.favoriteId;
+      const kind = card.classList.contains('top-loom-card') ? 'top' : 'preset';
+      const base = card.dataset.preset || slugifyValue(getCardTitle(card));
+      card.dataset.favoriteId = `${kind}-${base || Date.now()}`;
+      return card.dataset.favoriteId;
+    }
+    function getCardMeta(card) {
+      if (card.classList.contains('top-loom-card')) {
+        const byline = card.querySelector('.top-loom-meta span:first-child')?.textContent?.trim() || 'community';
+        const rating = card.querySelector('.top-loom-meta span:last-child')?.textContent?.trim() || '';
+        return { badge: 'Top Rated', byline, rating };
+      }
+      const badge = card.querySelector('.preset-tag')?.textContent?.trim() || 'Preset';
+      const byline = card.querySelector('.preset-author span:nth-child(2)')?.textContent?.trim() || 'community';
+      const rating = (card.querySelector('.preset-stars')?.textContent || '').replace(/\s+/g, ' ').trim();
+      return { badge, byline, rating };
+    }
+    function syncFavoriteButton(card) {
+      const button = card.querySelector('.loom-heart-btn');
+      if (!button) return;
+      setHeartState(button, card.dataset.favorited === 'true');
+    }
+    function ensureFavoriteButton(card) {
+      if (!card) return;
+      getCardFavoriteId(card);
+      if (!card.dataset.favorited) card.dataset.favorited = 'false';
+      let button = card.querySelector('.loom-heart-btn');
+      if (!button) {
+        button = createHeartButton();
+        if (card.classList.contains('top-loom-card')) {
+          const head = card.querySelector('.top-loom-head');
+          if (head) {
+            head.appendChild(button);
+          } else {
+            card.prepend(button);
+          }
+        } else {
+          const footer = card.querySelector('.preset-footer');
+          const stars = card.querySelector('.preset-stars');
+          if (footer && stars) {
+            footer.insertBefore(button, stars);
+          } else if (footer) {
+            footer.appendChild(button);
+          } else {
+            card.appendChild(button);
+          }
+        }
+        button.addEventListener('click', () => {
+          const next = card.dataset.favorited !== 'true';
+          card.dataset.favorited = next ? 'true' : 'false';
+          syncFavoriteButton(card);
+          renderFavoritesShelf();
+        });
+      }
+      syncFavoriteButton(card);
+    }
+    function focusFavoriteCard(card) {
+      if (card.classList.contains('preset-card') && activeLoomFilter !== 'all' && card.style.display === 'none') {
+        const allFilterBtn = document.querySelector('.loom-filter[data-filter="all"]');
+        if (allFilterBtn) allFilterBtn.click();
+      }
+      showView('marketplace');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.add('favorite-highlight');
+      setTimeout(() => card.classList.remove('favorite-highlight'), 950);
+    }
+    function buildFavoriteItem(card) {
+      const meta = getCardMeta(card);
+      const item = document.createElement('article');
+      item.className = 'rt-card favorite-item';
+
+      const head = document.createElement('div');
+      head.className = 'favorite-item-head';
+      const badge = document.createElement('span');
+      badge.className = 'favorite-item-badge';
+      badge.textContent = meta.badge;
+      const removeBtn = createHeartButton();
+      removeBtn.classList.add('favorite-remove-btn');
+      setHeartState(removeBtn, true);
+      removeBtn.addEventListener('click', () => {
+        card.dataset.favorited = 'false';
+        syncFavoriteButton(card);
+        renderFavoritesShelf();
+      });
+      head.append(badge, removeBtn);
+
+      const title = document.createElement('h4');
+      title.textContent = getCardTitle(card);
+      const description = document.createElement('p');
+      description.textContent = getCardDescription(card);
+      const metaLine = document.createElement('div');
+      metaLine.className = 'favorite-item-meta';
+      metaLine.textContent = `${meta.byline}${meta.rating ? ` · ${meta.rating}` : ''}`;
+      const jumpBtn = document.createElement('button');
+      jumpBtn.type = 'button';
+      jumpBtn.className = 'rt-btn-outline favorite-jump-btn';
+      jumpBtn.textContent = 'View card';
+      jumpBtn.addEventListener('click', () => focusFavoriteCard(card));
+
+      item.append(head, title, description, metaLine, jumpBtn);
+      return item;
+    }
+    function renderFavoritesShelf() {
+      if (!favoritesGrid || !favoritesEmpty) return;
+      favoritesGrid.innerHTML = '';
+      const favoriteCards = getLoomCards().filter(card => card.dataset.favorited === 'true');
+      favoritesEmpty.hidden = favoriteCards.length > 0;
+      favoriteCards.forEach(card => favoritesGrid.appendChild(buildFavoriteItem(card)));
+    }
 
     let activeLoomFilter = 'all';
     function applyLoomFilter(filter) {
@@ -2407,6 +2729,8 @@
         applyLoomFilter(btn.dataset.filter);
       });
     });
+    getLoomCards().forEach(card => ensureFavoriteButton(card));
+    renderFavoritesShelf();
 
     /* ── Download button simulation ── */
     function handleDownload(btn, filename) {
@@ -2601,8 +2925,10 @@
       const newCard = createPresetCardFromForm(values);
       loomGrid.prepend(newCard);
       observePresetCard(newCard);
+      ensureFavoriteButton(newCard);
       ensureReviewButton(newCard);
       applyLoomFilter(activeLoomFilter);
+      renderFavoritesShelf();
       event.target.reset();
     });
     getPresetCards().forEach(card => ensureReviewButton(card));
