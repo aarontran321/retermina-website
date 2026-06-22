@@ -503,6 +503,37 @@
       vertical-align: middle;
       margin: 0 0.1rem;
     }
+    .hero-dmg-wrap {
+      margin-top: 0.9rem;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      animation: fade-up 0.7s ease 0.52s both;
+    }
+    .hero-dmg-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.64rem 1.3rem;
+      border-radius: 999px;
+      border: var(--rt-border-width) solid color-mix(in srgb, var(--rt-accent) 28%, var(--rt-border));
+      background: linear-gradient(135deg, color-mix(in srgb, var(--rt-surface-strong) 84%, #000 16%), color-mix(in srgb, var(--rt-surface) 75%, #000 25%));
+      color: var(--rt-text);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      box-shadow: 0 10px 26px -16px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px) saturate(130%);
+      -webkit-backdrop-filter: blur(12px) saturate(130%);
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.25s, color 0.2s;
+    }
+    .hero-dmg-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--rt-accent);
+      color: var(--rt-accent);
+      box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--rt-accent) 38%, transparent);
+    }
 
     /* ── Terminal demo ── */
     .terminal-demo-wrap {
@@ -788,6 +819,10 @@
       .social-link { width: 2rem; height: 2rem; }
       .theme-switcher { font-size: 0.68rem; padding: 0.3rem 0.4rem; }
       .loom-btn { font-size: 0.72rem; padding: 0.35rem 0.7rem; }
+      .hero-dmg-btn {
+        width: min(92vw, 360px);
+        justify-content: center;
+      }
     }
 
     /* ── Loom Marketplace section ── */
@@ -865,6 +900,7 @@
       font-size: 0.95rem;
       font-weight: 600;
       letter-spacing: -0.01em;
+      margin-right: auto;
     }
     .top-loom-badge {
       font-size: 0.64rem;
@@ -895,13 +931,198 @@
       padding-top: 0.55rem;
       border-top: var(--rt-border-width) solid var(--rt-border);
     }
+    .top-loom-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .top-view-btn {
+      padding: 0.33rem 0.72rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .loom-heart-btn {
+      width: 1.9rem;
+      height: 1.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: var(--rt-border-width) solid var(--rt-border);
+      border-radius: var(--rt-radius-sm);
+      background: var(--rt-subsurface);
+      color: var(--rt-text-faint);
+      cursor: pointer;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .loom-heart-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2.35;
+      stroke: currentColor;
+      fill: none;
+    }
+    .loom-heart-btn:hover {
+      color: #fb7185;
+      border-color: #fb7185;
+      background: color-mix(in srgb, #fb7185 10%, transparent);
+      transform: translateY(-1px);
+    }
+    .loom-heart-btn.active {
+      color: #fb7185;
+      border-color: #fb7185;
+      background: color-mix(in srgb, #fb7185 14%, transparent);
+      box-shadow: 0 0 0 1px color-mix(in srgb, #fb7185 30%, transparent);
+    }
+    .loom-heart-btn.active svg {
+      fill: currentColor;
+      stroke-width: 2.1;
+    }
+    .loom-focus-highlight {
+      border-color: var(--rt-accent) !important;
+      box-shadow: 0 0 0 1px var(--rt-accent), 0 0 0 4px color-mix(in srgb, var(--rt-accent) 24%, transparent);
+    }
+    .loom-favorites {
+      padding: 1rem;
+      margin-bottom: 2.15rem;
+    }
+    .loom-favorites-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.35rem;
+    }
+    .loom-favorites-title {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .loom-favorites-copy {
+      margin: 0 0 0.95rem;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--rt-text-muted);
+      max-width: 620px;
+    }
+    .favorites-empty {
+      margin: 0;
+      padding: 0.9rem;
+      border: var(--rt-border-width) dashed var(--rt-border);
+      border-radius: var(--rt-radius);
+      font-size: 0.77rem;
+      line-height: 1.45;
+      background: var(--rt-subsurface);
+    }
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+    .favorite-item {
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      min-height: 180px;
+    }
+    .favorite-item-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .favorite-item-badge {
+      font-size: 0.64rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--rt-text-faint);
+      border: var(--rt-border-width) solid var(--rt-border);
+      border-radius: 999px;
+      padding: 0.18rem 0.45rem;
+      background: var(--rt-subsurface);
+    }
+    .favorite-item h4 {
+      margin: 0;
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .favorite-item p {
+      margin: 0;
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: var(--rt-text-muted);
+    }
+    .favorite-item-meta {
+      margin-top: auto;
+      font-size: 0.71rem;
+      color: var(--rt-text-faint);
+      line-height: 1.45;
+      min-height: 1.4em;
+    }
+    .favorite-remove-btn {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+    .favorite-jump-btn {
+      align-self: flex-start;
+      padding: 0.36rem 0.7rem;
+      font-size: 0.72rem;
+      line-height: 1;
+    }
+    .loom-search-tools {
+      width: min(760px, 100%);
+      margin: 0 auto 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .loom-search-wrap {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin: 0;
+    }
+    .loom-search-input {
+      width: min(560px, 100%);
+      padding: 0.62rem 0.85rem;
+      font-size: 0.82rem;
+      font-family: inherit;
+      color: var(--rt-text);
+      border: var(--rt-border-width) solid var(--rt-border);
+      border-radius: var(--rt-radius-sm);
+      background: var(--rt-subsurface);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-align: center;
+    }
+    .loom-search-input:focus {
+      border-color: var(--rt-accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--rt-accent) 18%, transparent);
+    }
+    .loom-filter-tags {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
 
     .loom-toolbar {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.75rem;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
     }
     .loom-add-panel {
       margin-bottom: 1.25rem;
@@ -930,10 +1151,11 @@
       justify-content: flex-end;
     }
     .loom-filter {
-      padding: 0.35rem 0.85rem;
+      padding: 0.35rem 0.82rem;
       font-size: 0.75rem;
       font-weight: 500;
       font-family: inherit;
+      border-radius: 999px;
       cursor: pointer;
       transition: color 0.15s, background 0.15s, border-color 0.15s;
     }
@@ -1071,6 +1293,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .preset-meta-right {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
     }
     .preset-name { font-size: 0.875rem; font-weight: 600; }
     .preset-tag {
@@ -1402,6 +1631,16 @@
         <span class="hero-version-dot"></span>
         Retermina <span class="hero-version-beta">beta</span> · v1.0.0 — early access, expect rough edges
       </p>
+      <div class="hero-dmg-wrap">
+        <a class="hero-dmg-btn" href="https://github.com/matthewhamilton3141/Retermina/releases/latest" target="_blank" rel="noopener">
+          <svg class="rt-icon" width="14" height="14" viewBox="0 0 24 24" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" x2="12" y1="3" y2="15"/>
+          </svg>
+          Download Desktop App (.dmg)
+        </a>
+      </div>
 
       <!-- Live terminal demo -->
       <div class="terminal-demo-wrap rt-panel" id="terminal-demo">
@@ -1551,12 +1790,21 @@
         <h2 class="section-title">Retermina Loom Marketplace</h2>
         <p class="rt-text-muted">One streamlined destination for curated top-rated layouts and all available workplace configurations. Browse, rate, and publish setups in the same flow.</p>
       </div>
+      <div class="loom-favorites rt-panel">
+        <div class="loom-favorites-head">
+          <h3 class="loom-favorites-title">My Favorites</h3>
+          <span class="rt-text-faint">Tap hearts to build your quick shelf</span>
+        </div>
+        <p class="loom-favorites-copy">Favorited loom configurations appear here instantly so you can compare your saved setups in one place.</p>
+        <p class="favorites-empty rt-text-muted" id="favorites-empty">No favorites yet — click a heart on any loom card to save it.</p>
+        <div class="favorites-grid" id="favorites-grid" aria-live="polite"></div>
+      </div>
 
       <div class="loom-subsection">
         <h3 class="loom-subtitle">Most Highly Rated Looms</h3>
         <p class="loom-subcopy rt-text-muted">Featured community workspaces with standout usability, thoughtful panel architecture, and reliable daily-driver ergonomics.</p>
         <div class="top-looms-grid">
-          <article class="rt-card top-loom-card">
+          <article class="rt-card top-loom-card" data-featured-preset="carbon">
             <div class="top-loom-head">
               <span class="top-loom-title">Carbon Noir Pro</span>
               <span class="top-loom-badge">Top 1</span>
@@ -1566,8 +1814,11 @@
               <span>by k_terminal</span>
               <span>★ 4.9 · 312 reviews</span>
             </div>
+            <div class="top-loom-actions">
+              <button type="button" class="rt-btn-outline top-view-btn" data-scroll-to-preset="carbon">View Card</button>
+            </div>
           </article>
-          <article class="rt-card top-loom-card">
+          <article class="rt-card top-loom-card" data-featured-preset="aurora">
             <div class="top-loom-head">
               <span class="top-loom-title">Aurora Ops Grid</span>
               <span class="top-loom-badge">Top 2</span>
@@ -1577,8 +1828,11 @@
               <span>by astrodev_</span>
               <span>★ 4.8 · 187 reviews</span>
             </div>
+            <div class="top-loom-actions">
+              <button type="button" class="rt-btn-outline top-view-btn" data-scroll-to-preset="aurora">View Card</button>
+            </div>
           </article>
-          <article class="rt-card top-loom-card">
+          <article class="rt-card top-loom-card" data-featured-preset="midnight">
             <div class="top-loom-head">
               <span class="top-loom-title">Midnight Indigo</span>
               <span class="top-loom-badge">Top 3</span>
@@ -1588,19 +1842,23 @@
               <span>by t3dotgg</span>
               <span>★ 4.8 · 143 reviews</span>
             </div>
+            <div class="top-loom-actions">
+              <button type="button" class="rt-btn-outline top-view-btn" data-scroll-to-preset="midnight">View Card</button>
+            </div>
           </article>
         </div>
       </div>
 
       <div class="loom-subsection">
+        <div class="loom-search-tools">
+          <div class="loom-search-wrap">
+            <input id="loom-search" class="loom-search-input" type="search" placeholder="Search available configurations by title, description, or tag..." aria-label="Search available loom configurations">
+          </div>
+          <div class="loom-filter-tags" id="loom-filter-tags" role="group" aria-label="Quick preset filters"></div>
+        </div>
         <h3 class="loom-subtitle">All Available Workplace Configurations</h3>
         <p class="loom-subcopy rt-text-muted">Explore full preset inventory, filter by style, then create and add your own workspace. Every configuration supports live 5-star reviews.</p>
         <div class="loom-toolbar">
-        <button class="rt-btn-outline loom-filter active" data-filter="all">All presets</button>
-        <button class="rt-btn-outline loom-filter" data-filter="dark">Dark</button>
-        <button class="rt-btn-outline loom-filter" data-filter="light">Light</button>
-        <button class="rt-btn-outline loom-filter" data-filter="glass">Glass</button>
-        <button class="rt-btn-outline loom-filter" data-filter="community">Community</button>
         <div class="loom-spacer"></div>
         <button class="loom-submit-btn" id="loom-open-modal">
           <svg class="rt-icon" width="14" height="14" viewBox="0 0 24 24" stroke-width="2.5"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
@@ -2159,6 +2417,7 @@
       document.querySelectorAll('.theme-dot, .theme-chip').forEach(el => {
         el.classList.toggle('active', el.dataset.theme === id);
       });
+      setActiveLoomFilterButton(activeLoomFilter);
     }
 
     document.querySelectorAll('[data-theme]').forEach(el => {
@@ -2377,7 +2636,13 @@
     if (startCards.length) startObs.observe(startCards[0].parentElement);
     /* ── Loom preset card reveal ── */
     const loomGrid = document.getElementById('loom-grid');
+    const favoritesGrid = document.getElementById('favorites-grid');
+    const favoritesEmpty = document.getElementById('favorites-empty');
+    const loomSearchInput = document.getElementById('loom-search');
+    const loomFilterTags = document.getElementById('loom-filter-tags');
     const getPresetCards = () => Array.from(loomGrid.querySelectorAll('.preset-card'));
+    const getTopCards = () => Array.from(document.querySelectorAll('.top-loom-card'));
+    const getAllLoomCards = () => [...getTopCards(), ...getPresetCards()];
     const presetObs = new IntersectionObserver(entries => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
@@ -2391,31 +2656,258 @@
     }
     getPresetCards().forEach(observePresetCard);
 
+    const HEART_ICON_SVG = `<svg class="rt-icon" width="14" height="14" viewBox="0 0 24 24"><path d="m12 21-1.35-1.23C5.4 15.03 2 11.96 2 8.2 2 5.16 4.42 2.75 7.45 2.75c1.72 0 3.36.8 4.55 2.05 1.19-1.25 2.83-2.05 4.55-2.05C19.58 2.75 22 5.16 22 8.2c0 3.76-3.4 6.83-8.65 11.57L12 21z"/></svg>`;
+    const DOWNLOAD_ICON_SVG = `<svg class="rt-icon" width="13" height="13" viewBox="0 0 24 24" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`;
+    const PRIORITY_LOOM_FILTERS = ['dark', 'light', 'glass'];
+    const slugifyValue = value => (value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     let activeLoomFilter = 'all';
-    function applyLoomFilter(filter) {
-      activeLoomFilter = filter;
+    let activeSearchQuery = '';
+
+    function setDownloadButtonLabel(button, label) {
+      if (!button) return;
+      button.innerHTML = `${DOWNLOAD_ICON_SVG} ${label}`;
+    }
+    function normalizeTagValue(value) {
+      return (value || '').trim().toLowerCase();
+    }
+    function splitTagValues(value) {
+      return normalizeTagValue(value).split(/[^a-z0-9]+/).filter(Boolean);
+    }
+    function getCardTagValues(card) {
+      const fromData = splitTagValues(card.dataset.tags || '');
+      const fromBadge = splitTagValues(card.querySelector('.preset-tag')?.textContent || '');
+      return Array.from(new Set([...fromData, ...fromBadge]));
+    }
+    function formatFilterLabel(value) {
+      if (value === 'all') return 'All Presets';
+      return value.split('-').filter(Boolean).map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+    }
+    function getAvailableLoomFilters() {
+      const discovered = new Set();
       getPresetCards().forEach(card => {
-        const tags = card.dataset.tags || '';
-        const show = filter === 'all' || tags.includes(filter);
-        card.style.display = show ? '' : 'none';
+        getCardTagValues(card).forEach(tag => discovered.add(tag));
+      });
+      const ordered = PRIORITY_LOOM_FILTERS.filter(tag => discovered.has(tag));
+      const remaining = Array.from(discovered)
+        .filter(tag => !PRIORITY_LOOM_FILTERS.includes(tag))
+        .sort((a, b) => a.localeCompare(b));
+      return ['all', ...ordered, ...remaining];
+    }
+    function setActiveLoomFilterButton(filter) {
+      if (!loomFilterTags) return;
+      loomFilterTags.querySelectorAll('.loom-filter').forEach(button => {
+        button.classList.toggle('active', button.dataset.filter === filter);
       });
     }
-    document.querySelectorAll('.loom-filter').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.loom-filter').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        applyLoomFilter(btn.dataset.filter);
+    function renderLoomFilterButtons() {
+      if (!loomFilterTags) return;
+      const filters = getAvailableLoomFilters();
+      if (!filters.includes(activeLoomFilter)) activeLoomFilter = 'all';
+      loomFilterTags.innerHTML = '';
+      filters.forEach(filter => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'rt-btn-outline loom-filter';
+        button.dataset.filter = filter;
+        button.textContent = formatFilterLabel(filter);
+        loomFilterTags.appendChild(button);
       });
+      setActiveLoomFilterButton(activeLoomFilter);
+    }
+    function cardSearchHaystack(card) {
+      const title = card.querySelector('.preset-name')?.textContent || '';
+      const description = card.querySelector('.preset-desc')?.textContent || '';
+      const tag = card.querySelector('.preset-tag')?.textContent || '';
+      const tags = card.dataset.tags || '';
+      return `${title} ${description} ${tag} ${tags}`.toLowerCase();
+    }
+    function cardMatchesSearch(card, query) {
+      if (!query) return true;
+      return cardSearchHaystack(card).includes(query);
+    }
+    function cardMatchesFilter(card, filter) {
+      if (filter === 'all') return true;
+      return getCardTagValues(card).includes(filter);
+    }
+    function applyLoomFilter(filter = activeLoomFilter) {
+      activeLoomFilter = normalizeTagValue(filter) || 'all';
+      getPresetCards().forEach(card => {
+        const matchesTag = cardMatchesFilter(card, activeLoomFilter);
+        const matchesSearch = cardMatchesSearch(card, activeSearchQuery);
+        card.hidden = !(matchesTag && matchesSearch);
+      });
+      setActiveLoomFilterButton(activeLoomFilter);
+    }
+    if (loomFilterTags) {
+      loomFilterTags.addEventListener('click', event => {
+        const target = event.target.closest('.loom-filter');
+        if (!target || !loomFilterTags.contains(target)) return;
+        applyLoomFilter(target.dataset.filter || 'all');
+      });
+    }
+    if (loomSearchInput) {
+      loomSearchInput.addEventListener('input', () => {
+        activeSearchQuery = loomSearchInput.value.trim().toLowerCase();
+        applyLoomFilter(activeLoomFilter);
+      });
+    }
+
+    function setHeartState(button, isFavorited) {
+      button.classList.toggle('active', isFavorited);
+      button.setAttribute('aria-pressed', isFavorited ? 'true' : 'false');
+      button.setAttribute('aria-label', isFavorited ? 'Remove from favorites' : 'Add to favorites');
+    }
+    function createHeartButton() {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'loom-heart-btn';
+      button.innerHTML = HEART_ICON_SVG;
+      return button;
+    }
+    function getCardTitle(card) {
+      return card.querySelector('.top-loom-title, .preset-name')?.textContent?.trim() || 'Loom configuration';
+    }
+    function getCardDescription(card) {
+      return card.querySelector('.top-loom-desc, .preset-desc')?.textContent?.trim() || 'Saved loom configuration.';
+    }
+    function getCardMeta(card) {
+      if (card.classList.contains('top-loom-card')) {
+        const byline = card.querySelector('.top-loom-meta span:first-child')?.textContent?.trim() || 'community';
+        const rating = card.querySelector('.top-loom-meta span:last-child')?.textContent?.trim() || '';
+        return { badge: 'Top Rated', byline, rating };
+      }
+      const badge = card.querySelector('.preset-tag')?.textContent?.trim() || 'Preset';
+      const byline = card.querySelector('.preset-author span:nth-child(2)')?.textContent?.trim() || 'community';
+      const rating = (card.querySelector('.preset-stars')?.textContent || '').replace(/\s+/g, ' ').trim();
+      return { badge, byline, rating };
+    }
+    function resolveTargetPreset(card) {
+      return card.dataset.featuredPreset || card.dataset.preset || slugifyValue(getCardTitle(card));
+    }
+    function syncFavoriteButton(card) {
+      const button = card.querySelector('.loom-heart-btn');
+      if (!button) return;
+      setHeartState(button, card.dataset.favorited === 'true');
+    }
+    function ensureFavoriteButton(card) {
+      if (!card) return;
+      if (!card.dataset.favorited) card.dataset.favorited = 'false';
+      let button = card.querySelector('.loom-heart-btn');
+      if (!button) {
+        button = createHeartButton();
+        if (card.classList.contains('top-loom-card')) {
+          const head = card.querySelector('.top-loom-head');
+          const badge = head?.querySelector('.top-loom-badge');
+          if (head && badge) {
+            head.insertBefore(button, badge.nextSibling);
+          } else if (head) {
+            head.appendChild(button);
+          }
+        } else {
+          const meta = card.querySelector('.preset-meta');
+          let rightCluster = meta?.querySelector('.preset-meta-right');
+          if (meta && !rightCluster) {
+            rightCluster = document.createElement('div');
+            rightCluster.className = 'preset-meta-right';
+            const tag = meta.querySelector('.preset-tag');
+            if (tag) rightCluster.appendChild(tag);
+            meta.appendChild(rightCluster);
+          }
+          if (rightCluster) {
+            rightCluster.appendChild(button);
+          } else if (meta) {
+            meta.appendChild(button);
+          }
+        }
+        button.addEventListener('click', () => {
+          const next = card.dataset.favorited !== 'true';
+          card.dataset.favorited = next ? 'true' : 'false';
+          syncFavoriteButton(card);
+          renderFavoritesShelf();
+        });
+      }
+      syncFavoriteButton(card);
+    }
+    function highlightPresetCard(card) {
+      card.classList.add('loom-focus-highlight');
+      setTimeout(() => card.classList.remove('loom-focus-highlight'), 1100);
+    }
+    function scrollToPresetCard(presetId) {
+      if (!presetId) return;
+      const targetCard = loomGrid.querySelector(`.preset-card[data-preset="${presetId}"]`);
+      if (!targetCard) return;
+      if (activeLoomFilter !== 'all' || activeSearchQuery) {
+        activeSearchQuery = '';
+        if (loomSearchInput) loomSearchInput.value = '';
+        applyLoomFilter('all');
+      }
+      showView('marketplace');
+      targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      highlightPresetCard(targetCard);
+    }
+    document.querySelectorAll('.top-view-btn').forEach(btn => {
+      btn.addEventListener('click', () => scrollToPresetCard(btn.dataset.scrollToPreset));
     });
+
+    function buildFavoriteItem(card) {
+      const meta = getCardMeta(card);
+      const targetPreset = resolveTargetPreset(card);
+      const item = document.createElement('article');
+      item.className = 'rt-card favorite-item';
+
+      const head = document.createElement('div');
+      head.className = 'favorite-item-head';
+      const badge = document.createElement('span');
+      badge.className = 'favorite-item-badge';
+      badge.textContent = meta.badge;
+      const removeBtn = createHeartButton();
+      removeBtn.classList.add('favorite-remove-btn');
+      setHeartState(removeBtn, true);
+      removeBtn.addEventListener('click', () => {
+        card.dataset.favorited = 'false';
+        syncFavoriteButton(card);
+        renderFavoritesShelf();
+      });
+      head.append(badge, removeBtn);
+
+      const title = document.createElement('h4');
+      title.textContent = getCardTitle(card);
+      const description = document.createElement('p');
+      description.textContent = getCardDescription(card);
+      const metaLine = document.createElement('div');
+      metaLine.className = 'favorite-item-meta';
+      metaLine.textContent = `${meta.byline}${meta.rating ? ` · ${meta.rating}` : ''}`;
+      const jumpBtn = document.createElement('button');
+      jumpBtn.type = 'button';
+      jumpBtn.className = 'rt-btn-outline favorite-jump-btn';
+      jumpBtn.textContent = 'View Card';
+      jumpBtn.addEventListener('click', () => scrollToPresetCard(targetPreset));
+
+      item.append(head, title, description, metaLine, jumpBtn);
+      return item;
+    }
+    function renderFavoritesShelf() {
+      if (!favoritesGrid || !favoritesEmpty) return;
+      favoritesGrid.innerHTML = '';
+      const favoriteCards = getAllLoomCards().filter(card => card.dataset.favorited === 'true');
+      favoritesEmpty.hidden = favoriteCards.length > 0;
+      favoriteCards.forEach(card => favoritesGrid.appendChild(buildFavoriteItem(card)));
+    }
+
+    getAllLoomCards().forEach(card => ensureFavoriteButton(card));
+    document.querySelectorAll('.preset-dl-btn').forEach(btn => setDownloadButtonLabel(btn, 'Download Config'));
+    renderFavoritesShelf();
+    renderLoomFilterButtons();
+    applyLoomFilter('all');
 
     /* ── Download button simulation ── */
     function handleDownload(btn, filename) {
       btn.classList.add('downloading');
-      btn.innerHTML = `<svg class="rt-icon" width="13" height="13" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Downloaded`;
+      setDownloadButtonLabel(btn, 'Config Downloaded');
       // In production this would trigger a real file download
       setTimeout(() => {
         btn.classList.remove('downloading');
-        btn.innerHTML = `<svg class="rt-icon" width="13" height="13" viewBox="0 0 24 24" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="3" y2="15"/></svg> Download`;
+        setDownloadButtonLabel(btn, 'Download Config');
       }, 2800);
     }
 
@@ -2601,8 +3093,12 @@
       const newCard = createPresetCardFromForm(values);
       loomGrid.prepend(newCard);
       observePresetCard(newCard);
+      ensureFavoriteButton(newCard);
+      setDownloadButtonLabel(newCard.querySelector('.preset-dl-btn'), 'Download Config');
       ensureReviewButton(newCard);
+      renderLoomFilterButtons();
       applyLoomFilter(activeLoomFilter);
+      renderFavoritesShelf();
       event.target.reset();
     });
     getPresetCards().forEach(card => ensureReviewButton(card));
