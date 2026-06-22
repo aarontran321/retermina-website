@@ -1841,6 +1841,18 @@
       </div>
 
       <div class="loom-subsection">
+        <div class="loom-favorites rt-panel">
+          <div class="loom-favorites-head">
+            <h3 class="loom-favorites-title">My Saved Favorites</h3>
+            <span class="rt-text-faint">Heart any card to pin it here</span>
+          </div>
+          <p class="loom-favorites-copy">Saved configurations stay here for quick access while you explore the marketplace.</p>
+          <p class="favorites-empty rt-text-muted" id="favorites-empty">Your favorited configurations will appear here.</p>
+          <div class="favorites-grid" id="favorites-grid" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="loom-subsection">
         <h3 class="loom-subtitle">Create Workspace Config</h3>
         <p class="loom-subcopy rt-text-muted">Create and add more workspace configurations directly into the marketplace list.</p>
         <div class="loom-toolbar">
@@ -2634,6 +2646,8 @@
     if (startCards.length) startObs.observe(startCards[0].parentElement);
     /* ── Loom preset card reveal ── */
     const loomGrid = document.getElementById('loom-grid');
+    const favoritesGrid = document.getElementById('favorites-grid');
+    const favoritesEmpty = document.getElementById('favorites-empty');
     const loomSearchInput = document.getElementById('loom-search');
     const loomFilterTags = document.getElementById('loom-filter-tags');
     const getPresetCards = () => Array.from(loomGrid.querySelectorAll('.preset-card'));
@@ -2761,6 +2775,27 @@
       button.innerHTML = HEART_ICON_SVG;
       return button;
     }
+    function getCardTitle(card) {
+      return card.querySelector('.top-loom-title, .preset-name')?.textContent?.trim() || 'Loom configuration';
+    }
+    function getCardDescription(card) {
+      return card.querySelector('.top-loom-desc, .preset-desc')?.textContent?.trim() || 'Saved loom configuration.';
+    }
+    function getCardMeta(card) {
+      if (card.classList.contains('top-loom-card')) {
+        const badge = card.querySelector('.top-loom-badge')?.textContent?.trim() || 'Top Rated';
+        const byline = card.querySelector('.top-loom-meta span:first-child')?.textContent?.trim() || 'community';
+        const rating = card.querySelector('.top-loom-meta span:last-child')?.textContent?.trim() || '';
+        return { badge, byline, rating };
+      }
+      const badge = card.querySelector('.preset-tag')?.textContent?.trim() || 'Preset';
+      const byline = card.querySelector('.preset-author span:nth-child(2)')?.textContent?.trim() || 'community';
+      const rating = (card.querySelector('.preset-stars')?.textContent || '').replace(/\s+/g, ' ').trim();
+      return { badge, byline, rating };
+    }
+    function resolveTargetPreset(card) {
+      return card.dataset.featuredPreset || card.dataset.preset || '';
+    }
     function syncFavoriteButton(card) {
       const button = card.querySelector('.loom-heart-btn');
       if (!button) return;
@@ -2800,6 +2835,7 @@
           const next = card.dataset.favorited !== 'true';
           card.dataset.favorited = next ? 'true' : 'false';
           syncFavoriteButton(card);
+          renderFavoritesShelf();
         });
       }
       syncFavoriteButton(card);
@@ -2824,9 +2860,58 @@
     document.querySelectorAll('.top-view-btn').forEach(btn => {
       btn.addEventListener('click', () => scrollToPresetCard(btn.dataset.scrollToPreset));
     });
+    function buildFavoriteItem(card) {
+      const meta = getCardMeta(card);
+      const targetPreset = resolveTargetPreset(card);
+      const item = document.createElement('article');
+      item.className = 'rt-card favorite-item';
+
+      const head = document.createElement('div');
+      head.className = 'favorite-item-head';
+      const badge = document.createElement('span');
+      badge.className = 'favorite-item-badge';
+      badge.textContent = meta.badge;
+      const removeBtn = createHeartButton();
+      removeBtn.classList.add('favorite-remove-btn');
+      setHeartState(removeBtn, true);
+      removeBtn.addEventListener('click', () => {
+        card.dataset.favorited = 'false';
+        syncFavoriteButton(card);
+        renderFavoritesShelf();
+      });
+      head.append(badge, removeBtn);
+
+      const title = document.createElement('h4');
+      title.textContent = getCardTitle(card);
+      const description = document.createElement('p');
+      description.textContent = getCardDescription(card);
+      const metaLine = document.createElement('div');
+      metaLine.className = 'favorite-item-meta';
+      metaLine.textContent = `${meta.byline}${meta.rating ? ` · ${meta.rating}` : ''}`;
+      const jumpBtn = document.createElement('button');
+      jumpBtn.type = 'button';
+      jumpBtn.className = 'rt-btn-outline favorite-jump-btn';
+      jumpBtn.textContent = 'View Card';
+      if (targetPreset) {
+        jumpBtn.addEventListener('click', () => scrollToPresetCard(targetPreset));
+      } else {
+        jumpBtn.disabled = true;
+      }
+
+      item.append(head, title, description, metaLine, jumpBtn);
+      return item;
+    }
+    function renderFavoritesShelf() {
+      if (!favoritesGrid || !favoritesEmpty) return;
+      favoritesGrid.innerHTML = '';
+      const favoriteCards = getAllLoomCards().filter(card => card.dataset.favorited === 'true');
+      favoritesEmpty.hidden = favoriteCards.length > 0;
+      favoriteCards.forEach(card => favoritesGrid.appendChild(buildFavoriteItem(card)));
+    }
 
     getAllLoomCards().forEach(card => ensureFavoriteButton(card));
     document.querySelectorAll('.preset-dl-btn').forEach(btn => setDownloadButtonLabel(btn, 'Download Config'));
+    renderFavoritesShelf();
     renderLoomFilterButtons();
     updateActiveLoomFilter('all');
 
