@@ -281,6 +281,11 @@
       align-items: center;
       gap: 0.35rem;
     }
+    .social-menu {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
     .social-link {
       display: flex;
       align-items: center;
@@ -297,11 +302,14 @@
       transition: color 0.2s, background-color 0.2s, border-color 0.2s, transform 0.2s;
       text-decoration: none;
       animation: fade-down 0.6s ease both;
+      appearance: none;
+      font: inherit;
+      cursor: pointer;
     }
-    .social-link:nth-child(1) { animation-delay: 0.05s; }
-    .social-link:nth-child(2) { animation-delay: 0.12s; }
-    .social-link:nth-child(3) { animation-delay: 0.19s; }
-    .social-link:nth-child(4) { animation-delay: 0.26s; }
+    .social-menu:nth-child(1) .social-link { animation-delay: 0.05s; }
+    .social-menu:nth-child(2) .social-link { animation-delay: 0.12s; }
+    .social-menu:nth-child(3) .social-link { animation-delay: 0.19s; }
+    .social-menu:nth-child(4) .social-link { animation-delay: 0.26s; }
     .social-link:hover {
       color: var(--rt-accent);
       background-color: var(--rt-surface-hover);
@@ -309,6 +317,54 @@
       transform: translateY(-2px);
     }
     .social-link svg { stroke: currentColor; }
+    .social-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0;
+      min-width: 11.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      padding: 0.32rem;
+      border: var(--rt-border-width) solid var(--rt-border);
+      border-radius: var(--rt-radius-sm);
+      background: color-mix(in srgb, var(--rt-surface-strong) 88%, transparent);
+      box-shadow: var(--rt-shadow-panel);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-5px);
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+      z-index: 20;
+    }
+    .social-menu:hover .social-dropdown,
+    .social-menu:focus-within .social-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .social-dropdown-link {
+      display: block;
+      padding: 0.44rem 0.55rem;
+      border-radius: calc(var(--rt-radius-sm) * 0.8);
+      border: 1px solid transparent;
+      color: var(--rt-text-muted);
+      text-decoration: none;
+      font-size: 0.74rem;
+      line-height: 1.2;
+      white-space: nowrap;
+      transition: color 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+    }
+    .social-dropdown-link:hover,
+    .social-dropdown-link:focus-visible {
+      color: var(--rt-accent);
+      background: var(--rt-accent-soft);
+      border-color: color-mix(in srgb, var(--rt-accent) 40%, transparent);
+      outline: none;
+    }
 
     .top-bar-right {
       display: flex;
@@ -1558,33 +1614,57 @@
   <div class="page">
     <div class="top-bar">
       <nav class="social-links" aria-label="Social links">
-        <a class="social-link" href="https://linkedin.com/in/matthewhamilton3141" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <svg class="rt-icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" fill="none">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-            <rect width="4" height="12" x="2" y="9"/>
-            <circle cx="4" cy="4" r="2"/>
-          </svg>
-        </a>
-        <a class="social-link" href="https://github.com/matthewhamilton3141" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <svg class="rt-icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" fill="none">
-            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.01.28-2.09 0-3.09 0 0-.79-.25-2.65 1.01A9.64 9.64 0 0 0 12 3c-2.35 0-4.27 1.02-5.4 2.01-1.86-1.26-2.65-1.01-2.65-1.01-.28 1-.28 2.09 0 3.09A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/>
-            <path d="M9 18c-4.51 2-5-2-7-2"/>
-          </svg>
-        </a>
-        <a class="social-link" href="https://instagram.com/mxtth2w" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <svg class="rt-icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" fill="none">
-            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-          </svg>
-        </a>
-        <a class="social-link" href="https://matthewhamilton.dev" target="_blank" rel="noopener noreferrer" aria-label="Personal Website">
-          <svg width="16" height="16" viewBox="0 0 800 1000" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="400,0 456,215 400,312 344,215" />
-            <polygon points="0,183 283,222 186,253 371,995" />
-            <polygon points="800,183 517,222 614,253 429,995" />
-          </svg>
-        </a>
+        <div class="social-menu">
+          <button type="button" class="social-link" aria-label="LinkedIn profiles" title="LinkedIn profiles">
+            <svg class="rt-icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" fill="none">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+              <rect width="4" height="12" x="2" y="9"/>
+              <circle cx="4" cy="4" r="2"/>
+            </svg>
+          </button>
+          <div class="social-dropdown" role="menu" aria-label="LinkedIn team profiles">
+            <a class="social-dropdown-link" href="https://linkedin.com/in/matthewhamilton3141" target="_blank" rel="noopener noreferrer">Matthew</a>
+            <a class="social-dropdown-link" href="https://www.linkedin.com/in/aaron-tran-157405339/" target="_blank" rel="noopener noreferrer">Aaron Tran</a>
+          </div>
+        </div>
+        <div class="social-menu">
+          <button type="button" class="social-link" aria-label="Instagram profiles" title="Instagram profiles">
+            <svg class="rt-icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" fill="none">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+            </svg>
+          </button>
+          <div class="social-dropdown" role="menu" aria-label="Instagram team profiles">
+            <a class="social-dropdown-link" href="https://instagram.com/mxtth2w" target="_blank" rel="noopener noreferrer">Matthew</a>
+            <a class="social-dropdown-link" href="https://www.instagram.com/aarontrannnn/" target="_blank" rel="noopener noreferrer">Aaron Tran</a>
+          </div>
+        </div>
+        <div class="social-menu">
+          <button type="button" class="social-link" aria-label="GitHub profiles" title="GitHub profiles">
+            <svg class="rt-icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" fill="none">
+              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.01.28-2.09 0-3.09 0 0-.79-.25-2.65 1.01A9.64 9.64 0 0 0 12 3c-2.35 0-4.27 1.02-5.4 2.01-1.86-1.26-2.65-1.01-2.65-1.01-.28 1-.28 2.09 0 3.09A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/>
+              <path d="M9 18c-4.51 2-5-2-7-2"/>
+            </svg>
+          </button>
+          <div class="social-dropdown" role="menu" aria-label="GitHub team profiles">
+            <a class="social-dropdown-link" href="https://github.com/matthewhamilton3141" target="_blank" rel="noopener noreferrer">Matthew</a>
+            <a class="social-dropdown-link" href="https://github.com/aarontran321" target="_blank" rel="noopener noreferrer">Aaron Tran</a>
+          </div>
+        </div>
+        <div class="social-menu">
+          <button type="button" class="social-link" aria-label="Personal website profiles" title="Personal website profiles">
+            <svg width="16" height="16" viewBox="0 0 800 1000" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="400,0 456,215 400,312 344,215" />
+              <polygon points="0,183 283,222 186,253 371,995" />
+              <polygon points="800,183 517,222 614,253 429,995" />
+            </svg>
+          </button>
+          <div class="social-dropdown" role="menu" aria-label="Personal website team profiles">
+            <a class="social-dropdown-link" href="https://matthewhamilton.dev" target="_blank" rel="noopener noreferrer">Matthew</a>
+            <a class="social-dropdown-link" href="https://aarontran.vercel.app/" target="_blank" rel="noopener noreferrer">Aaron Tran</a>
+          </div>
+        </div>
       </nav>
 
       <div class="top-bar-right">
